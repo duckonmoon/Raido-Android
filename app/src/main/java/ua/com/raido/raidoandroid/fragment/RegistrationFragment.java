@@ -49,6 +49,8 @@ public class RegistrationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_registration, container, false);
         ButterKnife.bind(this, view);
 
+        view.setOnClickListener((v)-> {});
+
         loginButton.setOnClickListener((v) -> changer.changeState(LoginActivity.State.LOGIN));
         resetPasswordButton.setOnClickListener((v)-> changer.changeState(LoginActivity.State.FORGET_PASSWORD));
         return view;

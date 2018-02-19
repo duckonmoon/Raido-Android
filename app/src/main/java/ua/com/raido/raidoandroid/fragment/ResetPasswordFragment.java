@@ -38,6 +38,7 @@ public class ResetPasswordFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_restore_password, container, false);
         ButterKnife.bind(this, view);
+        view.setOnClickListener((v)-> {});
         backButton.setOnClickListener(view1 -> changer.changeState(LoginActivity.State.LOGIN));
         return view;
     }
