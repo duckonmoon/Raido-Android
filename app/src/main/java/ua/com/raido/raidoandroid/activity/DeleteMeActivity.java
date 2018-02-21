@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -13,12 +14,18 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.routing.OSRMRoadManager;
+import org.osmdroid.bonuspack.routing.Road;
+import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +45,7 @@ public class DeleteMeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_delete_me);
         ButterKnife.bind(this);
         setMapConfiguration();
+
     }
 
     @Override
@@ -71,7 +79,7 @@ public class DeleteMeActivity extends AppCompatActivity {
         mapView.getOverlays().add(rotationGestureOverlay);
 
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        /*mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,
@@ -81,13 +89,29 @@ public class DeleteMeActivity extends AppCompatActivity {
             return;
         }
 
-        setLocationInMap();
+        setLocationInMap();*/
+        ArrayList<GeoPoint> waypoints = new ArrayList<GeoPoint>();
+        GeoPoint startPoint = new GeoPoint(44.4, -1.8);
+        waypoints.add(startPoint);
+        mapController.setCenter(startPoint);
+        GeoPoint endPoint = new GeoPoint(48.4, -1.9);
+        waypoints.add(endPoint);
 
+        Handler handler = new Handler();
+
+        new Thread(() -> {
+            Road road = new OSRMRoadManager(this).getRoad(waypoints);
+            Polyline roa = RoadManager.buildRoadOverlay(road);
+            handler.post(()-> {
+                mapView.getOverlays().add(roa);
+                mapView.invalidate();
+            });
+        }).start();
     }
 
     private void setLocationInMap() {
         try {
-            mFusedLocationClient.getLastLocation()
+            /*mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, location -> {
                         if (location != null) {
                             GeoPoint startPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
@@ -98,7 +122,7 @@ public class DeleteMeActivity extends AppCompatActivity {
                             marker.setPosition(new GeoPoint(location.getLatitude(),location.getLongitude()));
                             mapView.getOverlays().add(marker);
                         }
-                    });
+                    });*/
 
 
 
