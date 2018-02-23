@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,7 +19,7 @@ import ua.com.raido.raidoandroid.fragment.RegistrationFragment;
 import ua.com.raido.raidoandroid.fragment.ResetPasswordFragment;
 import ua.com.raido.raidoandroid.interfaces.StateChanger;
 
-public class LoginActivity extends AppCompatActivity implements StateChanger {
+public class LoginActivity extends BaseActivity implements StateChanger {
 
     @BindView(R.id.btn_login)
     Button loginButton;
@@ -41,11 +42,15 @@ public class LoginActivity extends AppCompatActivity implements StateChanger {
     @BindView(R.id.btn_signup)
     Button registrationButton;
 
+    @BindView(R.id.tool_bar)
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
 
         registrationButton.setOnClickListener((v)-> changeState(State.REGISTRATION));
         resetPasswordButton.setOnClickListener((v)-> changeState(State.FORGET_PASSWORD));

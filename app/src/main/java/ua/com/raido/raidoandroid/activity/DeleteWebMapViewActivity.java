@@ -13,7 +13,7 @@ import ua.com.raido.raidoandroid.R;
  * @deprecated Do not use this class!
  */
 @Deprecated
-public class DeleteWebMapViewActivity extends AppCompatActivity {
+public class DeleteWebMapViewActivity extends BaseActivity {
 
     @BindView(R.id.web_view)
     WebView webView;

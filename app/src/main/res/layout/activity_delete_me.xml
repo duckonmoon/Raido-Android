@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     tools:context="ua.com.raido.raidoandroid.activity.DeleteMeActivity">
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <org.osmdroid.views.MapView android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -32,9 +33,12 @@ import butterknife.ButterKnife;
 import ua.com.raido.raidoandroid.R;
 import ua.com.raido.raidoandroid.constans.Constans;
 
-public class DeleteMeActivity extends AppCompatActivity {
+public class DeleteMeActivity extends BaseActivity {
     @BindView(R.id.map)
     MapView mapView;
+
+    @BindView(R.id.tool_bar)
+    Toolbar toolbar;
 
     FusedLocationProviderClient mFusedLocationClient;
 
@@ -44,6 +48,7 @@ public class DeleteMeActivity extends AppCompatActivity {
         loadOSMConfiguration();
         setContentView(R.layout.activity_delete_me);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
         setMapConfiguration();
 
     }
