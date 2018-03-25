@@ -1,18 +1,17 @@
 package ua.com.raido.raidoandroid.activity;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.routing.OSRMRoadManager;
@@ -37,8 +36,6 @@ public class DeleteMeActivity extends BaseActivity {
     @BindView(R.id.map)
     MapView mapView;
 
-    @BindView(R.id.tool_bar)
-    Toolbar toolbar;
 
     FusedLocationProviderClient mFusedLocationClient;
 
@@ -48,7 +45,6 @@ public class DeleteMeActivity extends BaseActivity {
         loadOSMConfiguration();
         setContentView(R.layout.activity_delete_me);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
         setMapConfiguration();
 
     }
@@ -96,18 +92,25 @@ public class DeleteMeActivity extends BaseActivity {
 
         setLocationInMap();*/
         ArrayList<GeoPoint> waypoints = new ArrayList<GeoPoint>();
-        GeoPoint startPoint = new GeoPoint(44.4, -1.8);
+        GeoPoint startPoint = new GeoPoint(49.8326679, 23.9421961);
         waypoints.add(startPoint);
         mapController.setCenter(startPoint);
-        GeoPoint endPoint = new GeoPoint(48.4, -1.9);
+        GeoPoint endPoint = new GeoPoint(50.4016991, 30.2525149);
         waypoints.add(endPoint);
+
+        Marker m = new Marker(mapView);
+        m.setTitle("Lviv");
+        m.setIcon(ContextCompat.getDrawable(this,R.mipmap.ic_marker));
+        m.setPosition(new GeoPoint(49.8326679,23.9421961));
+        mapView.getOverlays().add(m);
 
         Handler handler = new Handler();
 
         new Thread(() -> {
             Road road = new OSRMRoadManager(this).getRoad(waypoints);
             Polyline roa = RoadManager.buildRoadOverlay(road);
-            handler.post(()-> {
+            roa.setColor(R.color.colorAccent);
+            handler.post(() -> {
                 mapView.getOverlays().add(roa);
                 mapView.invalidate();
             });
@@ -130,8 +133,8 @@ public class DeleteMeActivity extends BaseActivity {
                     });*/
 
 
-
-        } catch (SecurityException ignored){}
+        } catch (SecurityException ignored) {
+        }
 
     }
 
@@ -139,7 +142,7 @@ public class DeleteMeActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == Constans.PERMISSION_LOCATION_READ){
+        if (requestCode == Constans.PERMISSION_LOCATION_READ) {
             setLocationInMap();
         }
     }
